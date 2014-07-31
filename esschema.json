@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "definitions": {
     "Node": {
-      "type": "object",
       "properties": {
         "type": { "type": "string" },
         "loc": {
@@ -15,7 +14,6 @@
       "required": [ "type" ]
     },
     "SourceLocation": {
-      "type": "object",
       "properties": {
         "source": {
           "oneOf": [
@@ -36,31 +34,12 @@
       }
     },      
     "Position": {
-      "type": "object",
       "properties": {
         "line": { "type": "integer", "minimum": 1 },
         "column": { "type": "integer", "minimum": 0 }
       }
     },
-    "Program": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/Node" },
-        {
-          "properties": {
-            "type": { "type": "string", "pattern": "^Program$" },
-            "body": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Statement"
-              }
-            }
-          }
-        }
-      ]
-    },
     "Function": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/Node" },
         { 
@@ -102,13 +81,11 @@
       ]
     },
     "_Statement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/Node" }
       ]
     },
     "Statement": {
-      "type": "object",
       "oneOf": [
         { "$ref": "#/definitions/EmptyStatement" },
         { "$ref": "#/definitions/BlockStatement" },
@@ -128,11 +105,12 @@
         { "$ref": "#/definitions/ForInStatement" },
         { "$ref": "#/definitions/ForOfStatement" },
         { "$ref": "#/definitions/LetStatement" },
-        { "$ref": "#/definitions/DebuggerStatement" }
+        { "$ref": "#/definitions/DebuggerStatement" },
+        { "$ref": "#/definitions/Declaration" },
+        { "$ref": "#/definitions/Expression" }
       ]
     },
     "EmptyStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -143,7 +121,6 @@
       ]
     },
     "BlockStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -160,7 +137,6 @@
       ]
     },
     "ExpressionStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -174,7 +150,6 @@
       ]
     },
     "IfStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -193,7 +168,6 @@
       ]
     },
     "LabeledStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -206,7 +180,6 @@
       ]
     },
     "BreakStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -223,7 +196,6 @@
       ]
     },
     "ContinueStatement": {
-      "type": "object",
        "allOf": [
          { "$ref": "#/definitions/_Statement" },
          {
@@ -240,7 +212,6 @@
       ]
     },
     "WithStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -253,7 +224,6 @@
       ]
     },
     "SwitchStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -270,7 +240,6 @@
       ]
     },
     "ReturnStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -287,7 +256,6 @@
       ]
     },
     "ThrowStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -299,7 +267,6 @@
       ]
     },
     "TryStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -327,7 +294,6 @@
       ]
     },
     "WhileStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -340,7 +306,6 @@
       ]
     },
     "DoWhileStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -353,7 +318,6 @@
       ]
     },
     "ForStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -384,7 +348,6 @@
       ]
     },
     "ForInStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -404,7 +367,6 @@
       ]
     },
     "ForOfStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -423,7 +385,6 @@
       ]
     },
     "LetStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -452,7 +413,6 @@
       ]
     },
     "DebuggerStatement": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" },
         {
@@ -463,13 +423,11 @@
       ]
     },
     "_Declaration": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" }
       ]
     },
     "Declaration": {
-      "type": "object",
       "oneOf": [
         { "$ref": "#/definitions/FunctionDeclaration" },
         { "$ref": "#/definitions/VariableDeclaration" },
@@ -477,7 +435,6 @@
       ]
     },
     "FunctionDeclaration": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/Function" },
         { "$ref": "#/definitions/_Declaration" },
@@ -490,7 +447,6 @@
       ]
     },
     "VariableDeclaration": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Declaration" },
         {
@@ -512,7 +468,6 @@
       ]
     },
     "VariableDeclarator": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/Node" },
         {
@@ -530,14 +485,12 @@
       ]
     },
     "_Expression": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/Node" },
         { "$ref": "#/definitions/Pattern" }
       ]
     },
     "Expression": {
-      "type": "object",
       "oneOf": [
         { "$ref": "#/definitions/ThisExpression" },
         { "$ref": "#/definitions/ArrayExpression" },
@@ -563,7 +516,6 @@
       ]
     },
     "ThisExpression": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -572,7 +524,6 @@
       }
     },
     "ArrayExpression": {
-      "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -590,7 +541,6 @@
       }
     },
     "ObjectExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -620,7 +570,6 @@
       }
     },
     "FunctionExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/Function" },
         { "$ref": "#/definitions/_Expression" }
@@ -630,13 +579,11 @@
       }
     },
     "ArrowExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/Function" },
         { "$ref": "#/definitions/_Expression" }
       ],
       "not": { 
-        "type": "object",
         "properties": {
           "id": {
             "oneOf": [
@@ -651,7 +598,6 @@
       }
     },
     "SequenceExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -664,7 +610,6 @@
       }
     },
     "UnaryExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -676,7 +621,6 @@
       }
     },
     "BinaryExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -688,7 +632,6 @@
       }
     },
     "AssignmentExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -700,7 +643,6 @@
       }
     },
     "UpdateExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -712,7 +654,6 @@
       }
     },
     "LogicalExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -724,7 +665,6 @@
       }
     },
     "ConditionalExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -736,7 +676,6 @@
       }
     },
     "NewExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -750,7 +689,6 @@
       }
     },
     "CallExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -764,7 +702,6 @@
       }
     },
     "MemberExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -781,7 +718,6 @@
       }
     },
     "YieldExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -796,7 +732,6 @@
       }
     },
     "ComprehensionExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -816,7 +751,6 @@
       }
     },
     "GeneratorExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -836,7 +770,6 @@
       }
     },
     "GraphExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -847,7 +780,6 @@
       }
     },
     "GraphIndexExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -857,7 +789,6 @@
       }
     },
     "LetExpression": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -866,7 +797,6 @@
         "head": {
           "type": "array",
           "items": {
-            "type": "object",
             "properties": {
               "id": { "$ref": "#/definitions/Pattern" },
               "init": {
@@ -882,20 +812,17 @@
       }
     },
     "_Pattern": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/Node" }
       ]
     },
     "Pattern": {
-      "type": "object",
       "oneOf": [
         { "$ref": "#/definitions/ObjectPattern" },
         { "$ref": "#/definitions/ArrayPattern" }
       ]
     },
     "ObjectPattern": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Pattern" }
       ],
@@ -919,7 +846,6 @@
       }
     },
     "ArrayPattern": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/_Pattern" }
       ],
@@ -937,7 +863,6 @@
       }
     },
     "SwitchCase": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/Node" }
       ],
@@ -952,7 +877,6 @@
       }
     },
     "CatchClause": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/Node" }
       ],
@@ -969,7 +893,6 @@
       }
     },
     "ComprehensionBlock": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/Node" }
       ],
@@ -980,7 +903,6 @@
       }
     },
     "Identifier": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/Node" },
         { "$ref": "#/definitions/_Expression" },
@@ -992,7 +914,6 @@
       }
     },
     "Literal": {
-      "type": "object",
       "anyOf": [
         { "$ref": "#/definitions/Node" },
         { "$ref": "#/definitions/_Expression" }
@@ -1042,6 +963,15 @@
   },
   "type": "object",
   "allOf": [
-    { "$ref": "#/definitions/Program" }
-  ]
+    { "$ref": "#/definitions/Node" }
+  ],
+  "properties": {
+    "type": { "type": "string", "pattern": "^Program$" },
+    "body": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
 }

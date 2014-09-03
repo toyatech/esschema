@@ -42,6 +42,21 @@
         "column": { "type": "integer", "minimum": 0 }
       }
     },
+    "Program": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/definitions/Node" }
+      ],
+      "properties": {
+        "type": { "type": "string", "pattern": "^Program$" },
+        "body": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Statement"
+          }
+        }
+      }
+    },
     "_Statement": {
       "type": "object",
       "allOf": [
@@ -181,15 +196,6 @@
   },
   "type": "object",
   "allOf": [
-    { "$ref": "#/definitions/Node" }
-  ],
-  "properties": {
-    "type": { "type": "string", "pattern": "^Program$" },
-    "body": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Statement"
-      }
-    }
-  }
+    { "$ref": "#/definitions/Program" }
+  ]
 }

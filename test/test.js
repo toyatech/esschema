@@ -1,43 +1,115 @@
 var assert = require('assert')
-  , fs = require('fs')
   , tv4 = require('tv4')
-  , esprima = require('esprima')
   , esschema = require('../esschema.json')
+  , Empty = require('./fixtures/Empty.json')
+  , FortyTwo = require('./fixtures/FortyTwo.json')
+
+function valid(data, done) {
+  var result = tv4.validateResult(data, esschema)
+  if (result.error) {
+    console.log(result.error);
+  }
+  assert.equal(result.valid, true);
+  done();
+}
+
+function invalid(data, expect, done) {
+  var result = tv4.validateResult(data, esschema)
+//  console.log(result.error.message);
+  assert.equal(result.valid, false);
+  assert.equal(result.error.code, expect.code);
+  assert.equal((result.error.message.indexOf(expect.message) > -1), true);
+  done();
+}
+
+function checkMessageMissingRequiredProperty(property) {
+  return 'Missing required property: ' + property;
+} 
+
+function checkMessageStringDoesNotMatchPattern(pattern) {
+  return 'String does not match pattern: ' + pattern
+}
+
+function checkMessageInvalidType(found, expected) {
+  return 'invalid type: ' + found + ' (expected ' + expected + ')';
+}
+
+function checkMessageDataDoesNotMatchAnySchemasFromOneOf() {
+  return 'Data does not match any schemas from "oneOf"';
+}
+
+function clone(object) {
+  return JSON.parse(JSON.stringify(object));
+}
 
 describe('esschema.json', function() {
-  it('should be in valid JSON format', function() {
-    fs.readFile(__dirname + '/../esschema.json', 'utf8', function (err, data) {
-      assert.ifError(err);
-      assert.doesNotThrow(function() {
-        JSON.parse(data);
-      })
-    })
-  })
-  it ('should be in valid JSON Schema format', function() {
-    tv4.validate(
-      esschema, 
-      'http://json-schema.org/schema#', 
-      function(isValid, validationError) {
-        assert(isValid);
-        assert.equal(validationError, undefined);
-      }
-    )
-  })
-  fs.readdir(__dirname + '/fixtures/code', function(err, files) {
-    assert.ifError(err);
-    files.forEach(function(file) {
-      it('should validate ' + file, function() {
-        fs.readFile(__dirname + '/fixtures/code/' + file, function(err, data) {
-           tv4.validate(
-             esprima.parse(data),
-             esschema,
-             function(isValid, validationError) {
-               assert(isValid);
-               assert.equal(validationError, undefined);
-             }
-           ) 
-        })
-      })
-    })
-  })
-})
+  describe('definitions', function() {
+    describe('Program', function() {
+      describe('#type', function() {
+        it('should be invalid when not \'Program\'', function(done) {
+          var data = clone(Empty);
+          data.type = 'Programm';
+          var expect = { 
+            code: tv4.errorCodes.STRING_PATTERN,
+            message: checkMessageStringDoesNotMatchPattern('^Program$')
+          };
+          invalid(data, expect, done);
+        });
+        it('should be invalid when not a string', function(done) {
+          var data = clone(Empty);
+          data.type = 1;
+          var expect = { 
+            code: tv4.errorCodes.INVALID_TYPE,
+            message: checkMessageInvalidType('number', 'string') 
+          };
+          invalid(data, expect, done);
+        });
+        it('should be required', function(done) {
+          var data = clone(Empty);
+          delete data.type;
+          var expect = { 
+            code: tv4.errorCodes.OBJECT_REQUIRED,
+            message: checkMessageMissingRequiredProperty('type')
+          };
+          invalid(data, expect, done);
+        });
+      });
+      describe('#body', function() {
+        it('should be invalid if not an array', function(done) {
+          var data = clone(Empty);
+          data.body = 1;
+          var expect = { 
+            code: tv4.errorCodes.INVALID_TYPE,
+            message: checkMessageInvalidType('number', 'array') 
+          };
+          invalid(data, expect, done);
+        });
+      });
+    });
+    describe('VariableDeclaration', function() {
+      describe('#type', function() {
+       it('should be invalid when not \'VariableDeclaration\'', function(done) {
+          var data = clone(FortyTwo);
+          data.body[0].type = 'VariableDeclarationn';
+          var expect = {
+            code: tv4.errorCodes.ONE_OF_MISSING,
+            message: checkMessageDataDoesNotMatchAnySchemasFromOneOf()
+          };
+          invalid(data, expect, done);
+        }); 
+      });
+    });
+  });
+});
+
+describe('Empty.json', function() {
+  it('should be valid against esschema.json', function(done) {
+    valid(Empty, done);
+  });
+});
+
+describe('FortyTwo.json', function() {
+  it('should be valid against esschema.json', function(done) {
+    valid(FortyTwo, done);
+  });
+});

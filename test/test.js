@@ -34,8 +34,8 @@ function checkMessageInvalidType(found, expected) {
   return 'invalid type: ' + found + ' (expected ' + expected + ')';
 }
 
-function checkMessageDataDoesNotMatchAnySchemasFromOneOf() {
-  return 'Data does not match any schemas from "oneOf"';
+function checkMessageDataDoesNotMatchAnySchemasFrom(keyword) {
+  return 'Data does not match any schemas from "' + keyword + '"';
 }
 
 function clone(object) {
@@ -84,16 +84,12 @@ describe('esschema.json', function() {
           };
           invalid(data, expect, done);
         });
-      });
-    });
-    describe('VariableDeclaration', function() {
-      describe('#type', function() {
-       it('should be invalid when not \'VariableDeclaration\'', function(done) {
+        it('should be an array of a valid type', function(done) {
           var data = clone(FortyTwo);
           data.body[0].type = 'VariableDeclarationn';
           var expect = {
             code: tv4.errorCodes.ONE_OF_MISSING,
-            message: checkMessageDataDoesNotMatchAnySchemasFromOneOf()
+            message: checkMessageDataDoesNotMatchAnySchemasFrom('oneOf')
           };
           invalid(data, expect, done);
         }); 

@@ -1,4 +1,5 @@
 var assert = require('assert')
+  , fs = require('fs')
   , tv4 = require('tv4')
   , esschema = require('../esschema.json')
   , Empty = require('./fixtures/Empty.json')
@@ -7,7 +8,12 @@ var assert = require('assert')
 function valid(data, done) {
   var result = tv4.validateResult(data, esschema)
   if (result.error) {
-    console.log(result.error);
+    fs.writeFile(
+      './error.json', 
+      JSON.stringify(result.error, null, 2),  
+      function(err) {
+        console.err(err);
+    });
   }
   assert.equal(result.valid, true);
   done();

@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/schema#",
   "definitions": {
     "Node": {
       "type": "object",
@@ -25,7 +25,7 @@
         },
         "start": {
           "allOf": [
-             { "$ref": "#/definitions/Position" }
+            { "$ref": "#/definitions/Position" }
           ]
         },
         "end": {
@@ -33,38 +33,38 @@
             { "$ref": "#/definitions/Position" }
           ]
         }
-      }
-    },      
+      },
+      "required": [ "start", "end" ]
+    },
     "Position": {
       "type": "object",
       "properties": {
         "line": { "type": "integer", "minimum": 1 },
         "column": { "type": "integer", "minimum": 0 }
-      }
+      },
+      "required": [ "line", "column" ]
     },
     "Program": {
       "type": "object",
       "allOf": [
         { "$ref": "#/definitions/Node" }
-      ],  
+      ],
       "properties": {
         "type": { "type": "string", "pattern": "^Program$" },
         "body": {
           "type": "array",
           "items": {
-            "oneOf": [
-              { "$ref": "#/definitions/Statement" },
-              { "type": "null" }
-            ]
+            "$ref": "#/definitions/Statement"
           }
         }
-      }
+      },
+      "required": [ "body" ]
     },
     "Function": {
       "type": "object",
       "allOf": [
         { "$ref": "#/definitions/Node" }
-      ],   
+      ],
       "properties": {
         "id": {
           "oneOf": [
@@ -98,7 +98,10 @@
         "expression": {
           "type": "boolean"
         }
-      }
+      },
+      "required": [ 
+        "id", "params", "defaults", "rest", "body", "generator", "expression" 
+      ]
     },
     "_Statement": {
       "type": "object",
@@ -115,28 +118,15 @@
         { "$ref": "#/definitions/IfStatement" },
         { "$ref": "#/definitions/LabeledStatement" },
         { "$ref": "#/definitions/BreakStatement" },
-        { "$ref": "#/definitions/ContinueStatement" },
-        { "$ref": "#/definitions/WithStatement" },
-        { "$ref": "#/definitions/SwitchStatement" },
-        { "$ref": "#/definitions/ReturnStatement" },
-        { "$ref": "#/definitions/ThrowStatement" },
-        { "$ref": "#/definitions/TryStatement" },
-        { "$ref": "#/definitions/WhileStatement" },
-        { "$ref": "#/definitions/DoWhileStatement" },
         { "$ref": "#/definitions/ForStatement" },
-        { "$ref": "#/definitions/ForInStatement" },
-        { "$ref": "#/definitions/ForOfStatement" },
-        { "$ref": "#/definitions/LetStatement" },
-        { "$ref": "#/definitions/DebuggerStatement" },
-        { "$ref": "#/definitions/FunctionDeclaration" },
-        { "$ref": "#/definitions/VariableDeclaration" }
+        { "$ref": "#/definitions/Declaration" }
       ]
     },
     "EmptyStatement": {
       "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" }
-      ],  
+      ],
       "properties": {
         "type": { "type": "string", "pattern": "^EmptyStatement$" }
       }
@@ -154,25 +144,27 @@
             "$ref": "#/definitions/Statement"
           }
         }
-      }
+      },
+      "required": [ "body" ]
     },
     "ExpressionStatement": {
       "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" }
-      ],  
+      ],
       "properties": {
         "type": { "type": "string", "pattern": "^ExpressionStatement$" },
         "expression": {
-          "$ref": "#/definitions/ExpressionStatement"
+          "$ref": "#/definitions/Expression"
         }
-      } 
+      },
+      "required": [ "expression" ]
     },
     "IfStatement": {
       "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" }
-      ], 
+      ],
       "properties": {
         "type": { "type": "string", "pattern": "^IfStatement$" },
         "test": { "$ref": "#/definitions/Expression" },
@@ -183,7 +175,8 @@
             { "type": "null" }
           ]
         }
-      }
+      },
+      "required": [ "test", "consequent", "alternate" ]
     },
     "LabeledStatement": {
       "type": "object",
@@ -194,7 +187,8 @@
         "type": { "type": "string", "pattern": "^LabeledStatement$" },
         "label": { "$ref": "#/definitions/Identifier" },
         "body": { "$ref": "#/definitions/Statement" }
-      }
+      },
+      "required": [ "label", "body" ]
     },
     "BreakStatement": {
       "type": "object",
@@ -209,127 +203,14 @@
             { "type": "null" }
           ]
         }
-      }
-    },
-    "ContinueStatement": {
-      "type": "object",
-       "allOf": [
-         { "$ref": "#/definitions/_Statement" }
-       ],
-       "properties": {
-         "type": { "type": "string", "pattern": "^ContinueStatement$" },
-         "label": {
-          "oneOf": [
-            { "$ref": "#/definitions/Identifier" },
-            { "type": "null" }
-          ]
-        }
-      }
-    },
-    "WithStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^WithStatement$" },
-        "object": { "$ref": "#/definitions/Expression" },
-        "body": { "$ref": "#/definitions/Statement" }
-      }
-    },
-    "SwitchStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ], 
-      "properties": {
-        "type": { "type": "string", "pattern": "^SwitchStatement$" },
-        "discriminant": { "$ref": "#/definitions/Expression" },
-        "cases": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/SwitchCase" }
-        },
-        "lexical": { "type": "boolean" }
-      }
-    },
-    "ReturnStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^ReturnStatement$" },
-        "argument": {
-          "oneOf": [
-            { "$ref": "#/definitions/Expression" },
-            { "type": "null" }
-          ]
-        }
-      }
-    },
-    "ThrowStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ], 
-      "properties": {
-        "type": { "type": "string", "pattern": "^ThrowStatement$" },
-        "argument": { "$ref": "#/definitions/Expression" }
-      }
-    },
-    "TryStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ], 
-      "properties": {
-        "type": { "type": "string", "pattern": "^TryStatement$" },
-        "block": { "$ref": "#/definitions/BlockStatement" },
-        "handler": {
-          "oneOf": [
-            { "$ref": "#/definitions/CatchClause" },
-            { "type": "null" }
-          ]
-        },
-        "guardedHandlers": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/CatchClause" }
-        },
-        "finalizer": {
-          "oneOf": [
-            { "$ref": "#/definitions/BlockStatement" },
-            { "type": "null" }
-          ]
-        }
-      }
-    },
-    "WhileStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^WhileStatement$" },
-        "test": { "$ref": "#/definitions/Expression" },
-        "body": { "$ref": "#/definitions/Statement" }
-      }
-    },
-    "DoWhileStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ], 
-      "properties": {
-        "type": { "type": "string", "pattern": "^DoWhileStatement$" },
-        "body": { "$ref": "#/definitions/Statement" },
-        "test": { "$ref": "#/definitions/Expression" }
-      }
+      },
+      "required": [ "label" ]
     },
     "ForStatement": {
       "type": "object",
       "allOf": [
         { "$ref": "#/definitions/_Statement" }
-      ], 
+      ],
       "properties": {
         "type": { "type": "string", "pattern": "^ForStatement$" },
         "init": {
@@ -351,84 +232,14 @@
             { "type": "null" }
           ]
         },
-        "body": { "$ref": "#/definitions/Expression" }
-      }
-    },
-    "ForInStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ], 
-      "properties": {
-        "type": { "type": "string", "pattern": "^ForInStatement$" },
-        "left": {
-          "oneOf": [
-            { "$ref": "#/definitions/VariableDeclaration" },
-            { "$ref": "#/definitions/Expression" }
-          ]
-        },
-        "right": { "$ref": "#/definitions/Expression" },
-        "body": { "$ref": "#/definitions/Statement" },
-        "each": { "type": "boolean" }
-      }
-    },
-    "ForOfStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^ForOfStatement$" },
-        "left": {
-          "oneOf": [
-            { "$ref": "#/definitions/VariableDeclaration" },
-            { "$ref": "#/definitions/Expression" }
-          ]
-        },
-        "right": { "$ref": "#/definitions/Expression" },
         "body": { "$ref": "#/definitions/Statement" }
-      }
-    },
-    "LetStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ], 
-      "properties": {
-        "type": { "type": "string", "pattern": "^LetStatement$" },
-        "head": {
-          "type": "array",
-          "items": [
-            {
-              "type": "object",
-              "properties": {
-                "id": { "$ref": "#/definitions/Pattern" },
-                "init": {
-                  "oneOf": [
-                    { "$ref": "#/definitions/Expression" },
-                    { "type": "null" }
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "body": { "$ref": "#/definitions/Statement" }
-      }
-    },
-    "DebuggerStatement": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Statement" }
-      ], 
-      "properties": {
-        "type": { "type": "string", "pattern": "^DebuggerStatement$" }
-      }
+      },
+      "required": [ "init", "test", "update", "body" ]
     },
     "_Declaration": {
       "type": "object",
       "allOf": [
-        { "$ref": "#/definitions/_Statement" }
+        { "$ref": "#/definitions/Node" }
       ]
     },
     "Declaration": {
@@ -443,500 +254,91 @@
       "allOf": [
         { "$ref": "#/definitions/Function" },
         { "$ref": "#/definitions/_Declaration" }
-      ], 
+      ],
       "properties": {
         "type": { "type": "string", "pattern": "^FunctionDeclaration$" },
         "id": { "$ref": "#/definitions/Identifier" }
-      }
+      },
+      "required": [ "id" ]
     },
     "VariableDeclaration": {
       "type": "object",
+      "allOf": [
+        { "$ref": "#/definitions/_Declaration" }
+      ],
       "properties": {
         "type": { "type": "string", "pattern": "^VariableDeclaration$" },
         "declarations": {
           "type": "array",
-          "items": { "$ref": "#/definitions/VariableDeclarator" }
+          "items": {
+            "$ref": "#/definitions/VariableDeclarator"
+          }
         },
         "kind": {
-          "oneOf": [
-            { "type": "string", "pattern": "^var$" },
-            { "type": "string", "pattern": "^let$" },
-            { "type": "string", "pattern": "^const$" }
-          ]
+          "enum": [ "var", "let", "const" ]
         }
-      }
+      },
+      "required": [ "declarations", "kind" ]
     },
     "VariableDeclarator": {
       "type": "object",
       "allOf": [
         { "$ref": "#/definitions/Node" }
-      ], 
+      ],
       "properties": {
         "type": { "type": "string", "pattern": "^VariableDeclarator$" },
         "id": { "$ref": "#/definitions/Pattern" },
-        "init": {
+        "init": { 
           "oneOf": [
             { "$ref": "#/definitions/Expression" },
             { "type": "null" }
           ]
         }
-      }
+      },
+      "required": [ "id", "init" ]
     },
     "_Expression": {
-      "type": "object",
       "allOf": [
-        { "$ref": "#/definitions/Node" },
-        { "$ref": "#/definitions/Pattern" }
+        { "$ref": "#/definitions/Node" }
       ]
     },
     "Expression": {
       "type": "object",
       "oneOf": [
-        { "$ref": "#/definitions/ThisExpression" },
-        { "$ref": "#/definitions/ArrayExpression" },
-        { "$ref": "#/definitions/ObjectExpression" },
-        { "$ref": "#/definitions/FunctionExpression" },
-        { "$ref": "#/definitions/ArrowExpression" },
-        { "$ref": "#/definitions/SequenceExpression" },
-        { "$ref": "#/definitions/UnaryExpression" },
         { "$ref": "#/definitions/BinaryExpression" },
-        { "$ref": "#/definitions/AssignmentExpression" },
-        { "$ref": "#/definitions/UpdateExpression" },
-        { "$ref": "#/definitions/LogicalExpression" },
-        { "$ref": "#/definitions/ConditionalExpression" },
-        { "$ref": "#/definitions/NewExpression" },
-        { "$ref": "#/definitions/CallExpression" },
-        { "$ref": "#/definitions/MemberExpression" },
-        { "$ref": "#/definitions/YieldExpression" },
-        { "$ref": "#/definitions/ComprehensionExpression" },
-        { "$ref": "#/definitions/GeneratorExpression" },
-        { "$ref": "#/definitions/GraphExpression" },
-        { "$ref": "#/definitions/GraphIndexExpression" },
-        { "$ref": "#/definitions/LetExpression" },
         { "$ref": "#/definitions/Identifier" },
         { "$ref": "#/definitions/Literal" }
       ]
     },
-    "ThisExpression": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^ThisExpression$" }
-      }
-    },
-    "ArrayExpression": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^ArrayExpression$" },
-        "elements": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              { "$ref": "#/definitions/Expression" },
-              { "type": "null" }
-            ]
-          }
-        }
-      }
-    },
-    "ObjectExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "properties": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "key": {
-                "oneOf": [
-                  { "$ref": "#/definitions/Literal" },
-                  { "$ref": "#/definitions/Identifier" }
-                ]
-              },
-              "value": { "$ref": "#/definitions/Expression" },
-              "kind": {
-                "oneOf": [
-                  { "type": "string", "pattern": "^init$" },
-                  { "type": "string", "pattern": "^get$" },
-                  { "type": "string", "pattern": "^set$" }
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
-    "FunctionExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/Function" },
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^FunctionExpression$" }
-      }
-    },
-    "ArrowExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/Function" },
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "not": { 
-        "properties": {
-          "id": {
-            "oneOf": [
-              { "$ref": "#/definitions/Identifier" },
-              { "type": "null" }
-            ]
-          }
-        }
-      },
-      "properties": {
-        "type": { "type": "string", "pattern": "^ArrowExpression$" }
-      }
-    },
-    "SequenceExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^FunctionExpression$" },
-        "expressions": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/Expression" }
-        }
-      }
-    },
-    "UnaryExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^UnaryExpression$" },
-        "operator": { "$ref": "#/definitions/UnaryOperator" },
-        "prefix": { "type": "boolean" },
-        "argument": { "$ref": "#/definitions/Expression" }
-      }
-    },
     "BinaryExpression": {
       "type": "object",
-      "anyOf": [
+      "allOf": [
         { "$ref": "#/definitions/_Expression" }
       ],
       "properties": {
         "type": { "type": "string", "pattern": "^BinaryExpression$" },
-        "operator": { "$ref": "#/definitions/BinaryOperator" },
+        "operator": {
+          "$ref": "#/definitions/BinaryOperator"
+        },
         "left": { "$ref": "#/definitions/Expression" },
         "right": { "$ref": "#/definitions/Expression" }
-      }
-    },
-    "AssignmentExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^AssignmentExpression$" },
-        "operator": { "$ref": "#/definitions/AssignmentOperator" },
-        "left": { "$ref": "#/definitions/Expression" },
-        "right": { "$ref": "#/definitions/Expression" }
-      }
-    },
-    "UpdateExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^UpdateExpression$" },
-        "operator": { "$ref": "#/definitions/UpdateOperator" },
-        "argument": { "$ref": "#/definitions/Expression" },
-        "prefix": { "type": "boolean" }
-      }
-    },
-    "LogicalExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^LogicalExpression$" },
-        "operator": { "$ref": "#/definitions/LogicalOperator" },
-        "left": { "$ref": "#/definitions/Expression" },
-        "right": { "$ref": "#/definitions/Expression" }
-      }
-    },
-    "ConditionalExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^ConditionalExpression$" },
-        "test": { "$ref": "#/definitions/Expression" },
-        "alternate": { "$ref": "#/definitions/Expression" },
-        "consequent": { "$ref": "#/definitions/Expression" }
-      }
-    },
-    "NewExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^NewExpression$" },
-        "callee": { "$ref": "#/definitions/Expression" },
-        "arguments": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/Expression" }
-        }
-      }
-    },
-    "CallExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^CallExpression$" },
-        "callee": { "$ref": "#/definitions/Expression" },
-        "arguments": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/Expression" }
-        }
-      }
-    },
-    "MemberExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^MemberExpression$" },
-        "object": { "$ref": "#/definitions/Expression" },
-        "property": {
-          "oneOf": [
-            { "$ref": "#/definitions/Identifier" },
-            { "$ref": "#/definitions/Expression" }
-          ]
-        },
-        "computed": { "type": "boolean" }
-      }
-    },
-    "YieldExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^YieldExpression$" },
-        "argument": {
-          "oneOf": [
-            { "$ref": "#/definitions/Expression" },
-            { "type": "null" }
-          ]
-        }
-      }
-    },
-    "ComprehensionExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^ComprehensionExpression$" },
-        "body": { "$ref": "#/definitions/Expression" },
-        "blocks": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/ComprehensionBlock" }
-        },
-        "filter": {
-          "oneOf": [
-            { "$ref": "#/definitions/Expression" },
-            { "type": "null" }
-          ]
-        }
-      }
-    },
-    "GeneratorExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^GeneratorExpression$" },
-        "body": { "$ref": "#/definitions/Expression" },
-        "blocks": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/ComprehensionBlock" }
-        },
-        "filter": {
-          "oneOf": [
-            { "$ref": "#/definitions/Expression" },
-            { "type": "null" }
-          ]
-        }
-      }
-    },
-    "GraphExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^GraphExpression$" },
-        "index": { "type": "integer" },
-        "expression": { "$ref": "#/definitions/Literal" }
-      }
-    },
-    "GraphIndexExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^GraphIndexExpression$" },
-        "index": { "type": "integer" }
-      }
-    },
-    "LetExpression": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Expression" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^LetExpression$" },
-        "head": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "id": { "$ref": "#/definitions/Pattern" },
-              "init": {
-                "oneOf": [
-                  { "$ref": "#/definitions/Expression" },
-                  { "type": "null" }
-                ]
-              }
-            }
-          }
-        },
-        "body": { "$ref": "#/definitions/Expression" }
-      }
+      },
+      "required": [ "operator", "left", "right" ]
     },
     "_Pattern": {
-      "type": "object",
-      "anyOf": [
+      "allOf": [
         { "$ref": "#/definitions/Node" }
       ]
     },
     "Pattern": {
       "type": "object",
       "oneOf": [
-        { "$ref": "#/definitions/ObjectPattern" },
-        { "$ref": "#/definitions/ArrayPattern" },
         { "$ref": "#/definitions/Identifier" }
       ]
     },
-    "ObjectPattern": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Pattern" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^ObjectPattern$" },
-        "properties": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "key": {
-                "oneOf": [
-                  { "$ref": "#/definitions/Literal" },
-                  { "$ref": "#/definitions/Identifier" }
-                ]
-              },
-              "value": { "$ref": "#/definitions/Pattern" }
-            }
-          }
-        }
-      }
-    },
-    "ArrayPattern": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/_Pattern" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^ArrayPattern$" },
-        "element": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              { "$ref": "#/definitions/Pattern" },
-              { "type": "null" }
-            ]
-          }
-        }
-      }
-    },
-    "SwitchCase": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/Node" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^SwitchCase$" },
-        "test": {
-          "oneOf": [
-            { "$ref": "#/definitions/Expression" },
-            { "type": "null" }
-          ]
-        }
-      }
-    },
-    "CatchClause": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/Node" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^CatchClause$" },
-        "param": { "$ref": "#/definitions/Pattern" },
-        "guard": {
-          "oneOf": [
-            { "$ref": "#/definitions/Expression" },
-            { "type": "null" }
-          ]
-        },
-        "body": { "$ref": "#/definitions/BlockStatement" }
-      }
-    },
-    "ComprehensionBlock": {
-      "type": "object",
-      "anyOf": [
-        { "$ref": "#/definitions/Node" }
-      ],
-      "properties": {
-        "left": { "$ref": "#/definitions/Pattern" },
-        "right": { "$ref": "#/definitions/Expression" },
-        "each": { "type": "boolean" }
-      }
-    },
     "Identifier": {
       "type": "object",
-      "anyOf": [
+      "allOf": [
         { "$ref": "#/definitions/Node" },
         { "$ref": "#/definitions/_Expression" },
         { "$ref": "#/definitions/_Pattern" }
@@ -944,11 +346,12 @@
       "properties": {
         "type": { "type": "string", "pattern": "^Identifier$" },
         "name": { "type": "string" }
-      }
+      },
+      "required": [ "name" ]
     },
     "Literal": {
       "type": "object",
-      "anyOf": [
+      "allOf": [
         { "$ref": "#/definitions/Node" },
         { "$ref": "#/definitions/_Expression" }
       ],
@@ -960,39 +363,21 @@
             { "type": "boolean" },
             { "type": "null" },
             { "type": "number" },
-            { "$ref": "#/definitions/RegExp" }
+            { "type": "RegExp" }
           ]
+        },
+        "raw": {
+          "type": "string"
         }
-      }
-    },
-    "UnaryOperator": {
-      "type": "string",
-      "enum": [ "-", "+", "!", "~", "typeof", "void", "delete" ]
+      },
+      "required": [ "value", "raw" ]
     },
     "BinaryOperator": {
-      "type": "string",
       "enum": [ 
-        "==", "!=", "===", "!==", "<", "<=", ">", ">=", "<<", ">>", ">>>", 
-        "+", "-", "*", "/", "%", "|", "^", "&", "in", "instanceof", ".."
+        "==" , "!=" , "===" , "!==" , "<" , "<=" , ">" , ">=", "<<", ">>", 
+        ">>>", "+" , "-" , "*" , "/" , "%" , "|" , "^" , "&" , "in", 
+        "instanceof", ".."
       ]
-    },
-    "LogicalOperator": {
-      "type": "string",
-      "enum": [ "||", "&&" ]
-    },
-    "AssignmentOperator": {
-      "type": "string",
-      "enum": [
-        "=", "+=", "-=", "*=", "/=", "%=", 
-        "<<=", ">>=", ">>>=", "|=", "^=", "&="
-      ]
-    },
-    "UpdateOperator": {
-      "type": "string",
-      "enum": [ "++", "--" ]
-    },
-    "RegExp": {
-      "type": "string"
     }
   },
   "type": "object",

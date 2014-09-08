@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "definitions": {
+    "Module": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "http://esschema.org/esschema#/definitions/Program" }
+      ],
+      "properties": {
+        "body": {
+          "type": "array",
+          "items": [
+            { "$ref": "#/definitions/RequireDeclaration" }
+          ],
+          "additionalItems": { 
+            "$ref": "http://esschema.org/esschema#/definitions/Statement" 
+          }
+        }
+      }
+    },
+    "RequireDeclaration": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "http://esschema.org/esschema#/definitions/VariableDeclaration" }
+      ],
+      "properties": {
+        "declarations": {
+          "type": "array",
+          "items": [
+            { "$ref": "#/definitions/RequireDeclarator" }
+          ]
+        },
+        "kind": { "type": "string", "pattern": "^var$" }
+      }
+    },
+    "RequireDeclarator": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "http://esschema.org/esschema#/definitions/VariableDeclarator" }
+      ],
+      "properties": {
+        "init": { "$ref": "#/definitions/RequireCallExpression" }
+      }
+    },
+    "RequireCallExpression": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "http://esschema.org/esschema#/definitions/CallExpression" }
+      ],
+      "properties": {
+        "callee": { "$ref": "#/definitions/RequireIdentifier" },
+        "arguments": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ModuleIdentifier" },
+          "minItems": 1,
+          "maxItems": 1
+        }
+      }
+    },
+    "RequireIdentifier": {
+      "allOf": [
+        { "$ref": "http://esschema.org/esschema#/definitions/Identifier" }
+      ],
+      "properties": {
+        "name": { "type": "string", "pattern": "^require$" }
+      }
+    },
+    "ModuleIdentifier": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "http://esschema.org/esschema#/definitions/Literal" }
+      ],
+      "properties": {
+        "name": { "type": "string" }
+      }
+    }
+  },
+  "type": "object",
+  "allOf": [
+    { "$ref": "#/definitions/Module" }
+  ]
+}

@@ -697,54 +697,8 @@
     "Pattern": {
       "type": "object",
       "oneOf": [
-        { "$ref": "#/definitions/ObjectPattern" },
-        { "$ref": "#/definitions/ArrayPattern" },
         { "$ref": "#/definitions/Identifier" }
       ]
-    },
-    "ObjectPattern": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/Pattern" }
-      ],
-      "properties": {
-        "type": { "type": "string", "pattern": "^ObjectPattern$" },
-        "properties": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "key": {
-                "type": "object",
-                "oneOf": [
-                  { "$ref": "#/definitions/Literal" },
-                  { "$ref": "#/definitions/Identifier" }
-                ]
-              },
-              "value": {
-                "$ref": "#/definitions/Pattern"
-              }
-            }
-          }
-        }
-      }
-    },
-    "ArrayPattern": {
-      "type": "object",
-      "allOf": [
-        { "$ref": "#/definitions/Pattern" }
-      ],
-      "properties": {
-        "elements": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              { "$ref": "#/definitions/Pattern" },
-              { "type": "null" }
-            ]
-          }
-        }
-      }
     },
     "SwitchCase": {
       "type": "object",

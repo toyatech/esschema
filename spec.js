@@ -7,8 +7,9 @@ var nodes = Object.keys(esschema.definitions);
 // skip "base", structual, enum, and source location nodes
 var skip = ['Node', 'SourceLocation', 'Position', 'Function', '_Statement',
   'Statement', '_Declaration', 'Declaration', 'VariableDeclarator', 
-  '_Expression', 'Expression', '_Pattern', 'Pattern', 'Identifier', 'Literal', 
-  'UnaryOperator', 'BinaryOperator' ];
+  '_Expression', 'Expression', '_Pattern', 'Pattern', 'SwitchCase', 
+  'Identifier', 'Literal', 'UnaryOperator', 'BinaryOperator', 'LogicalOperator',
+  'AssignmentOperator', 'UpdateOperator', 'RegExp' ];
 
 nodes = nodes.filter(function(x) { return skip.indexOf(x) < 0 });
 

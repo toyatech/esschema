@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "definitions": {
+    "MongooseSchema": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "http://esschema.org/esschema#/definitions/Program" }
+      ],
+      "properties": {
+        "body": {
+          "type": "array",
+          "items": [
+            { "$ref": "http://esschema.org/esschema#/definitions/VariableDeclaration" },
+            { "$ref": "" }
+          ]
+        }
+      }
+    }
+  },
+  "type": "object",
+  "allOf": [
+    { "$ref": "#/definitions/MongooseSchema" }
+  ]
+}

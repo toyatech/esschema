@@ -180,13 +180,3 @@ describe('A MemberExpression node', function () {
         validate('MemberExpression', done);
     });
 });
-describe('An ObjectPattern node', function () {
-    it('should be valid against esschema.json', function (done) {
-        validate('ObjectPattern', done);
-    });
-});
-describe('An ArrayPattern node', function () {
-    it('should be valid against esschema.json', function (done) {
-        validate('ArrayPattern', done);
-    });
-});

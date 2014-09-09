@@ -742,15 +742,14 @@
             { "type": "string" },
             { "type": "boolean" },
             { "type": "null" },
-            { "type": "number" },
-            { "type": "RegExp" }
+            { "type": "number" }
           ]
         },
         "raw": {
           "type": "string"
         }
       },
-      "required": [ "value", "raw" ]
+      "required": [ "value" ]
     },
     "UnaryOperator": {
       "type": "string",

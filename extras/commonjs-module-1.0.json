@@ -10,7 +10,7 @@
         "body": {
           "type": "array",
           "items": [
-            { "$ref": "#/definitions/RequireDeclaration" }
+            { "$ref": "#/definitions/RequireVariableDeclaration" }
           ],
           "additionalItems": { 
             "$ref": "http://esschema.org/esschema#/definitions/Statement" 
@@ -18,7 +18,7 @@
         }
       }
     },
-    "RequireDeclaration": {
+    "RequireVariableDeclaration": {
       "type": "object",
       "allOf": [
         { "$ref": "http://esschema.org/esschema#/definitions/VariableDeclaration" }
@@ -27,19 +27,25 @@
         "declarations": {
           "type": "array",
           "items": [
-            { "$ref": "#/definitions/RequireDeclarator" }
+            { "$ref": "#/definitions/RequireVariableDeclarator" }
           ]
         },
         "kind": { "type": "string", "pattern": "^var$" }
       }
     },
-    "RequireDeclarator": {
+    "RequireVariableDeclarator": {
       "type": "object",
       "allOf": [
-        { "$ref": "http://esschema.org/esschema#/definitions/VariableDeclarator" }
+        { 
+          "$ref": "http://esschema.org/esschema#/definitions/VariableDeclarator"        }
       ],
       "properties": {
-        "init": { "$ref": "#/definitions/RequireCallExpression" }
+        "init": { 
+          "oneOf": [
+            { "$ref": "#/definitions/RequireCallExpression" },
+            { "$ref": "#/definitions/RequireMemberExpression" }
+          ]
+        }
       }
     },
     "RequireCallExpression": {
@@ -55,6 +61,15 @@
           "minItems": 1,
           "maxItems": 1
         }
+      }
+    },
+    "RequireMemberExpression": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "http://esschema.org/esschema#/definitions/MemberExpression" }
+      ],
+      "properties": {
+        "object": { "$ref": "#/definitions/RequireCallExpression" }
       }
     },
     "RequireIdentifier": {

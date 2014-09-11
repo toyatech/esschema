@@ -180,3 +180,8 @@ describe('A MemberExpression node', function () {
         validate('MemberExpression', done);
     });
 });
+describe('A Property node', function () {
+    it('should be valid against esschema.json', function (done) {
+        validate('Property', done);
+    });
+});

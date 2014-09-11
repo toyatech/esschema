@@ -10,15 +10,320 @@
         "body": {
           "type": "array",
           "items": [
-            { "$ref": "http://esschema.org/commonjs-module#/definitions/RequireVariableDeclaration" },
-            { "$ref": "" }
+            { 
+              "$ref": "http://esschema.org/commonjs-module#/definitions/RequireVariableDeclaration",
+              "default": {
+                "type": "VariableDeclaration",
+                "declarations": [
+                  {
+                    "type": "VariableDeclarator",
+                    "id": {
+                      "type": "Identifier",
+                      "name": "mongoose"
+                    },
+                    "init": {
+                      "type": "CallExpression",
+                      "callee": {
+                        "type": "Identifier",
+                        "name": "require"
+                      },
+                      "arguments": [
+                        {
+                          "type": "Literal",
+                          "value": "mongoose"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "kind": "var"
+              }  
+            },
+            { 
+              "$ref": "http://esschema.org/esschema#/definitions/VariableDeclaration",
+              "default": {
+                "type": "VariableDeclaration",
+                "declarations": [
+                  {
+                    "type": "VariableDeclarator",
+                    "id": {
+                      "type": "Identifier",
+                      "name": "Schema"
+                    },
+                    "init": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "Identifier",
+                        "name": "mongoose"
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "Schema"
+                      }
+                    }
+                  },
+                  {
+                    "type": "VariableDeclarator",
+                    "id": {
+                      "type": "Identifier",
+                      "name": "Mixed"
+                    },
+                    "init": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "Schema"
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "Types"
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "Mixed"
+                      }
+                    }
+                  },
+                  {
+                    "type": "VariableDeclarator",
+                    "id": {
+                      "type": "Identifier",
+                      "name": "ObjectId"
+                    },
+                    "init": {
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                          "type": "Identifier",
+                          "name": "Schema"
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "name": "Types"
+                        }
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "name": "ObjectId"
+                      }
+                    }
+                  }
+                ],
+                "kind": "var"
+              }
+            }
           ]
         }
       }
     },
-    "MongooseSchema": {
+    "SchemaIdentifier": {
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "string", "pattern": "^Schema$", "default": "Schema" }
+      }
     },
-    "Path": {
+    "SchemaVariableDeclaration": {
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/VariableDeclaration"
+      ],
+      "properties": {
+        "declarations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SchemaVariableDeclarator"
+          }
+        }
+      }
+    },
+    "SchemaVariableDeclarator": {
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/VariableDeclarator"
+      ],
+      "properties": {
+        "id": { "$ref": "#/definitions/SchemaInstanceIdentifier" },
+        "init": {
+        }
+      }
+    },
+    "SchemaInstanceIdentifier": {
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "string", "pattern": "^schema$", "default": "schema" }
+      }
+    },
+    "SchemaNewExpression": {
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/NewExpression"
+      ],
+      "properties": {
+        "callee": {
+          "$ref": "#/definitions/SchemaIdentifier"
+        },
+        "agruments": {
+          "type": "array",
+          "items": {
+          }
+        }
+      }
+    },
+    "SchemaObjectExpression": {
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/ObjectExpression"
+      ],
+      "properties": {
+        "properties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PathProperty"
+          }
+        }
+      }
+    },
+    "PathProperty": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Property"
+      ],
+      "properties": {
+        "value": {
+        }
+      }
+    },
+    "_SchemaTypeObjectExpression": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/ObjectExpression"
+      ]
+    },
+    "SchemaTypeObjectExpression": {
+      "oneOf": [
+        { "$ref": "#/definitions/StringSchemaTypeObjectExpression" },
+        { "$ref": "#/definitions/NumberSchemaTypeObjectExpression" },
+        { "$ref": "#/definitions/DateSchemaTypeObjectExpression" },
+        { "$ref": "#/definitions/BufferSchemaTypeObjectExpression" },
+	{ "$ref": "#/definitions/BooleanSchemaTypeObjectExpression" },
+        { "$ref": "#/definitions/MixedSchemaTypeObjectExpression" },
+        { "$ref": "#/definitions/ObjectSchemaTypeObjectExpression" },
+        { "$ref": "#/definitions/ArraySchemaTypeObjectExpression" }
+      ]
+    },
+    "StringSchemaTypeObjectExpression": {
+      "type": "object",
+      "allOf": [
+        "$ref": "#/definitions/SchemaTypeObjectExpression"
+      ],
+      "properties": {
+        "properties": {
+          "type": "array",
+          "items": [
+            { "$ref": "#/definitions/SchemaTypeProperty" }
+          ]
+        }
+      }
+    },
+    "SchemaTypeProperty":: {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Property"
+      ],
+      "properties": {
+        "key": {
+        }
+      }
+    },
+    "SchemaTypeIdentifier": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "String", "pattern": "^type$" }
+      }
+    },
+    "StringSchemaTypeIdentifier": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier" 
+      ],
+      "properties": {
+        "name": { "type": "String", "pattern": "^String$" }
+      }
+    },
+    "NumberSchemaTypeIdentifier": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "String", "pattern": "^Number$" }
+      }
+    },
+    "DateSchemaTypeIdentifier": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "String", "pattern": "^Date$" }
+      }
+    },
+    "BufferSchemaTypeIdentifier": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "String", "pattern": "^Buffer$" }
+      }
+    },
+    "BooleanSchemaTypeIdentifier": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "String", "pattern": "^Boolean$" }
+      }
+    },
+    "MixedSchemaTypeIdentifier": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "String", "pattern": "^Mixed$" }
+      }
+    },
+    "ObjectIdSchemaTypeIdentifier": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "String", "pattern": "^ObjectId$" }
+      }
+    },
+    "ArraySchemaTypeIdentifier": {
+      "type": "object",
+      "allOf": [
+        "$ref": "http://esschema.org/esschema#/definitions/Identifier"
+      ],
+      "properties": {
+        "name": { "type": "String", "pattern": "^Array$" }
+      }
     }
   },
   "type": "object",

@@ -517,26 +517,11 @@
         { "$ref": "#/definitions/_Expression" }
       ],
       "properties": {
+        "type": { "type": "string", "pattern": "^ObjectExpression$" },
         "properties": {
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "key": {
-                "oneOf": [
-                  { "$ref": "#/definitions/Literal" },
-                  { "$ref": "#/definitions/Identifier" }
-                ]
-              },
-              "value": { "$ref": "#/definitions/Expression" },
-              "kind": {
-                "oneOf": [
-                  { "type": "string", "pattern": "^init$" },
-                  { "type": "string", "pattern": "^get$" },
-                  { "type": "string", "pattern": "^set$" }
-                ]
-              }
-            }
+            "$ref": "#/definitions/Property"
           }
         }
       },
@@ -750,6 +735,28 @@
         }
       },
       "required": [ "value" ]
+    },
+    "Property": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "#/definitions/Node" }
+      ],
+      "properties": {
+        "key": {
+          "oneOf": [
+            { "$ref": "#/definitions/Literal" },
+            { "$ref": "#/definitions/Identifier" }
+          ]
+        },
+        "value": { "$ref": "#/definitions/Expression" },
+        "kind": {
+          "oneOf": [
+            { "type": "string", "pattern": "^init$" },
+            { "type": "string", "pattern": "^get$" },
+            { "type": "string", "pattern": "^set$" }
+          ]
+        }
+      }
     },
     "UnaryOperator": {
       "type": "string",

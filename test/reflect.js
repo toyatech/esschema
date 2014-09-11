@@ -1,7 +1,9 @@
 var assert = require('assert'), esprima = require('esprima'), tv4 = require('tv4'), esschema = require('../esschema.json');
 function adjustRegexLiteral(key, value) {
     if (key === 'value' && value instanceof RegExp) {
+        value = value.toString();
     }
+    return value;
 }
 function assertValid(code, done) {
     var result = tv4.validateResult(JSON.parse(JSON.stringify(esprima.parse(code), adjustRegexLiteral)), esschema);

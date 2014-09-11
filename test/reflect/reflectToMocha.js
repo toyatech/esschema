@@ -129,7 +129,7 @@ function Describe(code) {
   )
 };
 
-var program = Program(
+var result = Program(
   [
     VariableDeclaration(
       [
@@ -195,21 +195,26 @@ var program = Program(
               )
             ),
             BlockStatement(
-              ExpressionStatement(
-                AssignmentExpression(
-                  '=',
-                  Identifier('value'),
-                  CallExpression(
-                    MemberExpression(
-                      Identifier('value'),
-                      Identifier('toString')
-                    ),
-                    []
+              [
+                ExpressionStatement(
+                  AssignmentExpression(
+                    '=',
+                    Identifier('value'),
+                    CallExpression(
+                      MemberExpression(
+                        Identifier('value'),
+                        Identifier('toString')
+                      ),
+                      []
+                    )
                   )
                 )
-              )
+              ]
             ),
             null
+          ),
+          ReturnStatement(
+            Identifier('value')
           )
         ]
       )
@@ -288,41 +293,20 @@ var program = Program(
                             
 var Reflect = {
   parse: function(code) {
-    var result;
-
-    program.body.push(Describe(code));
-    
-    try {
-      result = esprima.parse(code);
-    } catch (error) {
-      result = error;
-    }
-  
-    return result;
+    result.body.push(Describe(code));
   }
 }
 
 var Pattern = function(obj) {
-  var pattern;
-  pattern = JSON.parse(JSON.stringify(obj));
+  var pattern = {};
   pattern.assert = function() {};
   return pattern;
 }
 
 require('./reflect').testReflect(Reflect, Pattern);
 
-//fs.writeFile('./reflect.json', JSON.stringify(program, null, 2), function(err) {
-//  if (err) console.error(err);
-//});
-
-//var esschema = require('../../esschema.json');
-
-//var result = tv4.validateResult(JSON.parse(JSON.stringify(program)), esschema);
-
-//debugger
-
-fs.writeFile('../reflect.js', escodegen.generate(JSON.parse(JSON.stringify(program))), function(err) {
-  if (err) console.error(err);
+fs.writeFile('../reflect.js', 
+  escodegen.generate(JSON.parse(JSON.stringify(result))), function(err) {
+    if (err) console.error(err);
 });
-//console.log(JSON.stringify(program, null, 2));
 

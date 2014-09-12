@@ -1,18 +1,17 @@
 {
   "name": "esschema",
   "version": "0.0.1",
-  "description": "ECMAScript validation through JSON Schema.",
+  "description": "Esprima compatible AST description through JSON Schema",
   "repository": {
     "type": "git",
     "url": "https://github.com/toyatech/esschema"
   },
-  "dependencies": {
-    "esprima": "1.2.2",
-    "tv4": "1.1.0"
-  },
   "devDependencies": {
     "escodegen": "^1.4.1",
+    "esprima": "1.2.2",
+    "estools": "^0.1.0",
     "grunt": "^0.4.5",
-    "grunt-jsonlint": "^1.0.4"
+    "grunt-jsonlint": "^1.0.4",
+    "tv4": "1.1.0"
   }
 }

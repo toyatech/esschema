@@ -1,10 +1,10 @@
 esschema
 ========
 
-ECMAScript (JavaScript) validation of the Mozilla 
-[Parser AST](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API)
-compatible Esprima [AST](http://esprima.org/doc/index.html#ast) via 
+Attempts to describe the [Mozilla Parser AST](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API) compatible [Esprima AST](http://esprima.org/doc/index.html#ast) via a
 [JSON Schema](http://json-schema.org/).
+
+While the primary purpose of Esschema is to describe the AST, the [esschema.json](http://esschema/esschema.json) file can be used with JSON Schema validation libraries to validate an AST.
 
 Esschema is created and maintained by [Dusty Little](http://twitter.com/noisypebble).
 

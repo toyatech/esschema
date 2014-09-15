@@ -142,10 +142,9 @@
         { "$ref": "#/definitions/_Statement" }
       ],
       "properties": {
-        "type": { "type": "string", "pattern": "^EmptyStatementt$" }
+        "type": { "type": "string", "pattern": "^EmptyStatement$" }
       },
-      "required": [ "type" ],
-      "additionalItems": false
+      "required": [ "type" ]
     },
     "BlockStatement": {
       "type": "object",

@@ -199,6 +199,16 @@
       ],
       "properties": {
         "value": {
+          "oneOf": [
+            { "$ref": "#/definitions/StringSchemaTypeObjectExpression" },
+            { "$ref": "#/definitions/NumberSchemaTypeObjectExpression" },
+            { "$ref": "#/definitions/DateSchemaTypeObjectExpression" },
+            { "$ref": "#/definitions/BufferSchemaTypeObjectExpression" },
+            { "$ref": "#/definitions/BooleanSchemaTypeObjectExpression" },
+            { "$ref": "#/definitions/MixedSchemaTypeObjectExpression" },
+            { "$ref": "#/definitions/ObjectSchemaTypeObjectExpression" },
+            { "$ref": "#/definitions/ArraySchemaTypeObjectExpression" }
+          ]
         }
       }
     },
@@ -209,16 +219,6 @@
       ]
     },
     "SchemaTypeObjectExpression": {
-      "oneOf": [
-        { "$ref": "#/definitions/StringSchemaTypeObjectExpression" },
-        { "$ref": "#/definitions/NumberSchemaTypeObjectExpression" },
-        { "$ref": "#/definitions/DateSchemaTypeObjectExpression" },
-        { "$ref": "#/definitions/BufferSchemaTypeObjectExpression" },
-	{ "$ref": "#/definitions/BooleanSchemaTypeObjectExpression" },
-        { "$ref": "#/definitions/MixedSchemaTypeObjectExpression" },
-        { "$ref": "#/definitions/ObjectSchemaTypeObjectExpression" },
-        { "$ref": "#/definitions/ArraySchemaTypeObjectExpression" }
-      ]
     },
     "StringSchemaTypeObjectExpression": {
       "type": "object",

@@ -1,5 +1,4 @@
 {
-  "id": "http://esschema.org/esschema#",
   "$schema": "http://json-schema.org/schema#",
   "definitions": {
     "Node": {
@@ -35,8 +34,7 @@
           ]
         }
       },
-      "required": [ "start", "end" ],
-      "additionalItems": false
+      "required": [ "start", "end" ]
     },
     "Position": {
       "type": "object",
@@ -44,8 +42,7 @@
         "line": { "type": "integer", "minimum": 1 },
         "column": { "type": "integer", "minimum": 0 }
       },
-      "required": [ "line", "column" ],
-      "additionalItems": false
+      "required": [ "line", "column" ]
     },
     "Program": {
       "type": "object",
@@ -61,8 +58,7 @@
           }
         }
       },
-      "required": [ "body" ],
-      "additionalItems": false
+      "required": [ "body" ]
     },
     "Function": {
       "type": "object",

@@ -16,4 +16,6 @@ Why use a JSON Schema to validate Esprima AST when there are other more performa
 
 Esschema includes a large number of tests most of which are adapted from the Mozilla Parser AST test suite itself. Execute these tests using mocha:
 
-```mocha -R spec
+```
+mocha -R spec
+```

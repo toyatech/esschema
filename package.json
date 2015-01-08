@@ -1,6 +1,6 @@
 {
   "name": "esschema",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Esprima compatible AST description through JSON Schema",
   "repository": {
     "type": "git",

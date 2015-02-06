@@ -1,6 +1,6 @@
 {
   "name": "esschema",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Esprima compatible AST description through JSON Schema",
   "repository": {
     "type": "git",
@@ -13,5 +13,8 @@
     "grunt": "^0.4.5",
     "grunt-jsonlint": "^1.0.4",
     "tv4": "1.1.0"
+  },
+  "dependencies": {
+    "eswalk": "~1.0.2"
   }
 }

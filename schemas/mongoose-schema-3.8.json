@@ -1,0 +1,246 @@
+{
+  "type": "object",
+  "properties": {
+    "type": { 
+      "type": "string",
+      "enum": ["Program"]
+    },
+    "body": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["VariableDeclaration"]
+            },
+            "declarations": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["VariableDeclarator"]
+                    },
+                    "id": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["Identifier"]
+                        },
+                        "name": {
+                          "type": "string",
+                          "enum": ["Schema"]
+                        }
+                      }
+                    },
+                    "init": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum" ["MemberExpression"]
+                        },
+                        "computed": {
+                          "type": "boolean",
+                          "default": true
+                        },
+                        "object": {
+                          "type" "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": ["CallExpression"]
+                            },
+                            "callee": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "enum": ["Identifier"]
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "enum": ["require"]
+                                }
+                              }
+                            },
+                            "arguments": {
+                              "type": "array",
+                              "items": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "enum": "Literal"
+                                    },
+                                    "value": {
+                                      "type": "string",
+                                      "enum": ["mongoose-wrappers"]
+                                    },
+                                    "raw": {
+                                      "type": "string",
+                                      "enum": ["'mongoose-wrappers'"]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        "property": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": ["Identifier"]
+                            },
+                            "name": {
+                              "type": "string",
+                              "enum": ["Schema"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "kind": {
+              "type": "string",
+              "enum": ["var"]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["ExpressionStatement"]
+            },
+            "expression": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["AssignmentExpression"]
+                },
+                "operator": {
+                  "type": "string",
+                  "enum": ["="]
+                },
+                "left": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["MemberExpression"]
+                    }
+                    "computed": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "object": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["Identifier"]
+                        },
+                        "name": {
+                          "type": "string",
+                          "enum": ["module"]
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["Identifier"]
+                        },
+                        "name": {
+                          "type": "string",
+                          "enum": ["exports"]
+                        }
+                      }
+                    }
+                  }
+                },
+                "right": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["AssignmentExpression"]
+                    },
+                    "operator": {
+                      "type": "string",
+                      "enum": "="
+                    },
+                    "left": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["Identifier"]
+                        },
+                        "name": {
+                          "type": "string",
+                          "enum" : ["exports"]
+                        }
+                      },
+                      "right": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": ["ObjectExpression"]
+                          },
+                          "properties": {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "enum": ["Property"]
+                                  },
+                                  "key": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": ["Identifier"]
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

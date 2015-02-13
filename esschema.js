@@ -55,6 +55,9 @@
       }
       return oo;
     },
+    generateDefinitions: function() {
+      return { definitions: {} };
+    },
     generateAnyOf: function() {
       return { anyOf: [] };
     },

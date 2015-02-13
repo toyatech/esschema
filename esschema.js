@@ -17,12 +17,13 @@
   }
 
   function typeOf(t) {
-    t = Array.isArray(t) ? 'array' : typeof(t);
+    t = Array.isArray(t) ? 'array' : 
+      t === null && typeof t === 'object' ? 'null' : typeof(t);
     return t.slice(0,1).toUpperCase() + t.slice(1);
   }
 
   var generators = {
-    generateNull: function() {
+    generateNull: function(n, options) {
       return { type: 'null' };
     },
     generateString: function(s, options) {

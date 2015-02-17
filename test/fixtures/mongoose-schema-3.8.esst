@@ -1,0 +1,21 @@
+$definitions({
+  SchemaType: {
+
+  }
+})
+
+var Schema = require('mongoose-wrappers').Schema;
+
+exports = {
+  $$SchemaName: new Schema({
+    paths: $object({
+      additionalProperties: { $ref: '#/definitions/SchemaType' }
+    }),
+    virtuals: {},
+    methods: {},
+    statics: {},
+    indexes: {},
+    plugins: {},
+    options: {}
+  })
+}

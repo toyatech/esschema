@@ -1,6 +1,36 @@
 $definitions({
+  SchemaTypes: {
+    oneOf: [
+      { $ref: '#/definitions/StringSchemaType' },
+      { $ref: '#/definitions/NumberSchemaType' },
+      { $ref: '#/definitions/BooleanSchemaType' },
+      { $ref: '#/definitions/DateSchemaType' },
+      { $ref: '#/definitions/ArraySchemaType' },
+      { $ref: '#/definitions/MixedSchemaType' },
+      { $ref: '#/definitions/ObjectIdSchemaType' }
+    ]
+  },
   SchemaType: {
-
+    properties: {
+      default: {
+        oneOf: [
+        ]
+      }
+    }
+  },
+  StringSchemaType: {
+  },
+  NumberSchemaType: {
+  },
+  BooleanSchemaType: {
+  },
+  DateSchemaType: {
+  },
+  ArraySchemaType: {
+  },
+  MixedSchemaType: {
+  },
+  ObjectIdSchemaType: {
   }
 })
 
@@ -9,7 +39,9 @@ var Schema = require('mongoose-wrappers').Schema;
 exports = {
   $$SchemaName: new Schema({
     paths: $object({
-      additionalProperties: { $ref: '#/definitions/SchemaType' }
+      additionalProperties: { 
+        $ref: '#/definitions/SchemaTypes'
+      }
     }),
     virtuals: {},
     methods: {},

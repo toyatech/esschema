@@ -7,6 +7,7 @@
     "url": "https://github.com/toyatech/esschema"
   },
   "devDependencies": {
+    "estree": "https://github.com/estree/formal.git",
     "escodegen": "^1.4.1",
     "esprima": "1.2.2",
     "estools": "^0.1.0",

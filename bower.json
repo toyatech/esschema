@@ -1,0 +1,28 @@
+{
+  "name": "esschema",
+  "main": "esschema.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/toyatech/esschema",
+  "authors": [
+    "Dusty Little <dlittle@toyatech.net>"
+  ],
+  "description": "A JSON Schema for the JavaScript AST (now ESTree) with additional tools.",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "json",
+    "schema",
+    "es",
+    "ast",
+    "estree"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

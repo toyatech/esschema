@@ -2,7 +2,7 @@ var estree = require('../node_modules/estree-formal/formal-data/es5.json');
 
 function processType(t) {
   if (t.kind === 'reference') {
-    return { $ref: t.name };
+    return { $ref: '#/definitions/' + t.name };
   } else if (t.kind === 'union') {
     var u = [];
     for (var i = 0; i < t.types.length; i++) {
@@ -37,8 +37,12 @@ function estree2esschema(estree) {
   for (k in estree) {
     var n = estree[k];
     if (n.kind === 'interface') {
-      var o = { type: 'object', properties: {} };
-      s.definitions[k] = processProperties(n, o);
+      if (Object.keys(n.props).length === 0) {
+        s.definitions[k] = { type: 'object', $oneOf: [] };
+      } else {
+        var o = { type: 'object', properties: {} };
+        s.definitions[k] = processProperties(n, o);
+      }
     }
   }
   return s;

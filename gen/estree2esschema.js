@@ -2,7 +2,15 @@ var estree = require('../node_modules/estree-formal/formal-data/es5.json');
 
 function processType(t) {
   if (t.kind === 'reference') {
-    return { $ref: '#/definitions/' + t.name };
+    if (t.name === 'string') {
+      return { type: 'string' };
+    } else if (t.name === 'boolean') {
+      return { type: 'boolean' };
+    } else if (t.name === 'number') {
+      return { type: 'number' };
+    } else {
+      return { $ref: '#/definitions/' + t.name };
+    }
   } else if (t.kind === 'union') {
     var u = [];
     for (var i = 0; i < t.types.length; i++) {

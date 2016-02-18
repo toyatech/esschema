@@ -27,7 +27,7 @@
       return { type: 'null' };
     },
     generateString: function(s, options) {
-      return { type: 'string', enum: [s] };
+      return { type: 'string', constant: s };
     },
     generateNumber: function(n, options) {
       return { type: 'number', minimum: n, maximum: n };
@@ -49,11 +49,14 @@
       return { type: 'object', properties: generators.generateObjectProperties(o, options) };
     },
     generateObjectProperties: function(o, options) {
-      var oo = {};
-      for (var k in o) {
-        oo[k] = generate(o[k], options);
+      var oo = {}, op = o.getOwnPropertyNames(), i = op.length;
+      while (i--) {
+        oo[op[i]] = generate(o[op[i]], options);
       }
       return oo;
+    },
+    generateFunction: function(o, options) {
+      return {};
     },
     generateDefinitions: function() {
       return { definitions: {} };
